@@ -1,5 +1,12 @@
 ReportTab = require 'reportTab'
 templates = require '../templates/templates.js'
+
+_partials = require '../node_modules/seasketch-reporting-api/templates/templates.js'
+partials = []
+for key, val of _partials
+  partials[key.replace('node_modules/seasketch-reporting-api/', '')] = val
+
+
 d3 = window.d3
 
 class OverviewTab extends ReportTab
@@ -44,7 +51,6 @@ class OverviewTab extends ReportTab
       displaced_dive_value = "unknown"
 
 
-
     # setup context object with data and render the template from it
     context =
       sketch: @model.forTemplate()
@@ -57,10 +63,9 @@ class OverviewTab extends ReportTab
       min_dim_size: min_dim_size
       displaced_fishing_value: displaced_fishing_value
       displaced_dive_value: displaced_dive_value
+
     
     @$el.html @template.render(context, templates)
-
-
-
+    @enableLayerTogglers()
 
 module.exports = OverviewTab
