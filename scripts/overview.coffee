@@ -32,7 +32,7 @@ class OverviewTab extends ReportTab
     isCollection = @model.isCollection()
 
     dfv = @recordSet('DiveAndFishingValue', 'FishingValue').toArray()[0]
-    ddv = @recordSet('DiveAndFishingValue', 'DievValue').toArray()[0]
+    ddv = @recordSet('DiveAndFishingValue', 'DiveValue').toArray()[0]
     console.log(dfv)
     if dfv
       if dfv.PERCENT < 0.01
