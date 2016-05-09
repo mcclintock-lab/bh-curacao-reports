@@ -8,6 +8,7 @@ class OverviewTab extends ReportTab
   template: templates.overview
   dependencies:[ 
     'SizeToolbox'
+    'DiveAndFishingValue'
   ]
   render: () ->
 
@@ -23,6 +24,27 @@ class OverviewTab extends ReportTab
     
     isCollection = @model.isCollection()
 
+    dfv = @recordSet('DiveAndFishingValue', 'FishingValue').toArray()[0]
+    ddv = @recordSet('DiveAndFishingValue', 'DievValue').toArray()[0]
+    console.log(dfv)
+    if dfv
+      if dfv.PERCENT < 0.01
+        displaced_fishing_value = "< 0.01"
+      else
+        displaced_fishing_value = parseFloat(dfv.PERCENT).toFixed(2)
+    else
+      displaced_fishing_value = "unknown"
+
+    if ddv
+      if ddv.PERCENT < 0.01
+        displaced_dive_value = "< 0.01"
+      else
+        displaced_dive_value = parseFloat(ddv.PERCENT).toFixed(2)
+    else
+      displaced_dive_value = "unknown"
+
+
+
     # setup context object with data and render the template from it
     context =
       sketch: @model.forTemplate()
@@ -33,6 +55,8 @@ class OverviewTab extends ReportTab
       size: size
       min_dim_name: min_dim_name
       min_dim_size: min_dim_size
+      displaced_fishing_value: displaced_fishing_value
+      displaced_dive_value: displaced_dive_value
     
     @$el.html @template.render(context, templates)
 
