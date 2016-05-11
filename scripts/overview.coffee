@@ -33,7 +33,7 @@ class OverviewTab extends ReportTab
 
     dfv = @recordSet('DiveAndFishingValue', 'FishingValue').toArray()[0]
     ddv = @recordSet('DiveAndFishingValue', 'DiveValue').toArray()[0]
-    console.log(dfv)
+    
     if dfv
       if dfv.PERCENT < 0.01
         displaced_fishing_value = "< 0.01"
