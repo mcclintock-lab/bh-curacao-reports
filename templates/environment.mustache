@@ -23,6 +23,13 @@
 
  <div class="reportSection tableContainer">
     <h4>Biomass</h4>
+    {{#d3IsPresent}}
+      <div class="in-report-header">Herbivorous Biomass</div>
+      <div id="herb_viz" class="herb_viz"></div>
+      <div class="in-report-header">Fish Biomass</div>
+      <div id="fish_viz" class="fish_viz"></div>
+    {{/d3IsPresent}}
+    {{^d3IsPresent}}
       <table data-paging="10">
         <thead>
           <tr>
@@ -47,5 +54,6 @@
           </tr>
         </tbody>
       </table>
+    {{/d3IsPresent}}
  </div>
 
