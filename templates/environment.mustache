@@ -1,12 +1,28 @@
 
  <div class="reportSection tableContainer">
     <h4>Habitats</h4>
-      <p>
-        The selected sketch <b>{{#meetsNationalGoal}}meets{{/meetsNationalGoal}}{{^meetsNationalGoal}}fails to meet{{/meetsNationalGoal}}</b> the national coral conservation goal of 10%.
-      </p>
-      <p>
-        The selected sketch <b>{{#meetsConservationGoal}}meets{{/meetsConservationGoal}}{{^meetsConservationGoal}}fails to meet{{/meetsConservationGoal}}</b> the coral conservation goal of 30%.
-      </p>
+      {{#isCollection}}
+        {{#meetsNationalGoal}}
+          <p style="padding-left:50px;" class="large green-check">
+            The selected collection <b>meets</b> the national coral conservation goal of <b>10%</b>.
+          </p>
+        {{/meetsNationalGoal}}
+        {{^meetsNationalGoal}}
+          <p style="padding-left:50px;" class="large red-x">
+            The selected collection <b>does not meet</b> the national coral conservation goal of <b>10%</b>.
+          </p>
+        {{/meetsNationalGoal}}
+        {{#meetsConservationGoal}}
+          <p style="padding-left:50px;" style="padding-left:25px;"class="large green-check">
+            The selected collection <b>meets</b> the coral conservation goal of <b>30%</b>.
+          </p>
+        {{/meetsConservationGoal}}
+        {{^meetsConservationGoal}}
+          <p style="padding-left:50px;" class="large red-x">
+            The selected collection <b>does not meet</b> the coral conservation goal of <b>30%</b>.
+          </p>
+        {{/meetsConservationGoal}}
+      {{/isCollection}}
       <table data-paging="10">
         <thead>
           <tr>

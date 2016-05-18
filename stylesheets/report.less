@@ -1,5 +1,12 @@
 @import '../node_modules/seasketch-reporting-api/stylesheets/common.less';
-
+.environment{ 
+  p {
+    margin-left:25px;
+    text-align:left;
+    vertical-align:top;
+    display:inline-block;
+  }
+ }
 .herb_viz, .fish_viz {
   position:relative;
   margin-left: 20px;
@@ -105,4 +112,19 @@
 .maxScoreLine{
 	stroke:#a9a9a9;
 	stroke-width:0.5;
+}
+
+p.red-x {
+  padding-left:50px;
+  padding-right:10px;
+  position:relative;
+  &:before {
+    font-family:'fontello';
+    color:red;
+    content: 'x';
+    position:absolute;
+    left:15px;
+    top:30%;
+    font-size:24px;
+  }
 }
