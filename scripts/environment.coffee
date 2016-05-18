@@ -17,9 +17,8 @@ class EnvironmentTab extends ReportTab
     'Habitat'
     'BiomassToolbox'
   ]
+
   render: () ->
-
-
     # create random data for visualization
     habitats = @recordSet('Habitat', 'Habitats').toArray()
     herb_bio = @recordSet('BiomassToolbox', 'HerbivoreBiomass').toArray()[0]
@@ -36,6 +35,9 @@ class EnvironmentTab extends ReportTab
     d3IsPresent = window.d3 ? true  : false
     @roundData habitats
 
+    meetsNationalGoal = @meetsCoralGoal(habitats,10.0)
+    meetsConservationGoal = @meetsCoralGoal(habitats, 30.0)
+
     # setup context object with data and render the template from it
     context =
       sketch: @model.forTemplate()
@@ -47,16 +49,28 @@ class EnvironmentTab extends ReportTab
       d3IsPresent: d3IsPresent
       herb: herb_bio
       fish: fish_bio
-    
+      meetsNationalGoal: meetsNationalGoal
+      meetsConservationGoal: meetsConservationGoal
+
     @$el.html @template.render(context, templates)
     @enableLayerTogglers()
 
-    @renderHistoValues(herb_bio.MEAN, all_herb_vals, ".herb_viz", "#47ae43")
-    @renderHistoValues(fish_bio.MEAN, all_fish_vals, ".fish_viz", "steelblue")
+    @renderHistoValues(herb_bio, all_herb_vals, ".herb_viz", "#47ae43")
+    @renderHistoValues(fish_bio, all_fish_vals, ".fish_viz", "steelblue")
 
-  renderHistoValues: (mean, histo_vals, graph, color) =>
+  meetsCoralGoal: (habitats, goal_val) =>
+    for hab in habitats
+      if hab.HAB_TYPE == 'Coral Reef'
+        return hab.PERC > goal_val
+
+    return false
+  renderHistoValues: (biomass, histo_vals, graph, color) =>
     if window.d3
-
+      mean = biomass.MEAN
+      bmin = biomass.MIN
+      bmax = biomass.MAX
+      console.log("min: ", min)
+      console.log("max: ", max)
       len = histo_vals.length
       max_histo_val = histo_vals[len-1]
       quantile_range = {"Q0":"very low", "Q20": "low","Q40": "mid","Q60": "high","Q80": "very high"}
@@ -129,7 +143,7 @@ class EnvironmentTab extends ReportTab
         .scale(y)
         .orient("left")
 
-
+      min_max_line_y = max_count_val - 20
       svg = d3.select(@$(graph)[0]).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
@@ -168,40 +182,90 @@ class EnvironmentTab extends ReportTab
           .attr("height", (d) -> height - y(d.bin_count))
           .style 'fill', (d) -> color
 
-      svg.selectAll(".score")
-          .data([Math.round(mean)])
-        .enter().append("text")
-        .attr("class", "score")
-        .attr("x", (d) -> (x((d)) - 8 )+ 'px')
-        .attr("y", (d) -> (y(max_count_val) - 2) + 'px')
-        .text("▼")
 
-      svg.selectAll("scoreLine")
+      svg.selectAll(".scoreLine")
           .data([Math.round(mean)])
         .enter().append("line")
         .attr("class", "scoreLine")
         .attr("x1", (d) -> (x((d)) )+ 'px')
-        .attr("y1", (d) -> (y(max_count_val)-2) + 'px')
+        .attr("y1", (d) -> (y(max_count_val) - 9) + 'px')
         .attr("x2", (d) -> (x(d)+ 'px'))
         .attr("y2", (d) -> height + 'px')
+
+      svg.selectAll(".score")
+          .data([Math.round(mean)])
+        .enter().append("text")
+        .attr("class", "score")
+        .attr("x", (d) -> (x((d)) - 6 )+ 'px')
+        .attr("y", (d) -> (y(max_count_val) - 9) + 'px')
+        .text("▼")
 
       svg.selectAll(".scoreText")
           .data([Math.round(mean)])
         .enter().append("text")
         .attr("class", "scoreText")
-        .attr("x", (d) -> (x(d) - 41 )+ 'px')
+        .attr("x", (d) -> (x(d) - 22 )+ 'px')
         .attr("y", (d) -> (y(max_count_val) - 22) + 'px')
+        .text((d) -> "Mean: "+d)
 
-        .text((d) -> "Sketch Mean: "+d)
 
-      @$(graph).append '<div class="legends"></div>'
+      svg.selectAll(".minScoreLine")
+          .data([Math.round(bmin)])
+        .enter().append("line")
+        .attr("class", "minScoreLine")
+        .attr("x1", (d) -> (x((d)) )+ 'px')
+        .attr("y1", (d) -> (y(max_count_val) - 6) + 'px')
+        .attr("x2", (d) -> (x(d)+ 'px'))
+        .attr("y2", (d) -> height + 'px')
+
+      svg.selectAll(".minScore")
+          .data([Math.round(bmin)])
+        .enter().append("text")
+        .attr("class", "minScore")
+        .attr("x", (d) -> (x((d)) - 6 )+ 'px')
+        .attr("y", (d) -> (y(max_count_val)) + 'px')
+        .text("▼")
+
+
+      svg.selectAll(".minScoreText")
+          .data([Math.round(bmin)])
+        .enter().append("text")
+        .attr("class", "minScoreText")
+        .attr("x", (d) -> (x(d) - 21 )+ 'px')
+        .attr("y", (d) -> (y(max_count_val) - 12) + 'px')
+        .text((d) -> "Min: "+d)
+
+
+      svg.selectAll(".maxScoreLine")
+          .data([Math.round(bmax)])
+        .enter().append("line")
+        .attr("class", "maxScoreLine")
+        .attr("x1", (d) -> (x((d)) )+ 'px')
+        .attr("y1", (d) -> (y(max_count_val) - 18) + 'px')
+        .attr("x2", (d) -> (x(d)+ 'px'))
+        .attr("y2", (d) -> height + 'px')
+
+      svg.selectAll(".maxScore")
+          .data([Math.round(bmax)])
+        .enter().append("text")
+        .attr("class", "maxScore")
+        .attr("x", (d) -> (x((d)) - 6 )+ 'px')
+        .attr("y", (d) -> (y(max_count_val) - 18) + 'px')
+        .text("▼")
+
+      svg.selectAll(".maxScoreText")
+          .data([Math.round(bmax)])
+        .enter().append("text")
+        .attr("class", "maxScoreText")
+        .attr("x", (d) -> (x(d) - 21 )+ 'px')
+        .attr("y", (d) -> (y(max_count_val) - 30) + 'px')
+        .text((d) -> "Max: "+d)
+
+      if graph == ".herb_viz"
+        @$(graph).append '<div class="legends"><div class="legend"><span class="herb">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
+      else
+        @$(graph).append '<div class="legends"><div class="legend"><span class="fish">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
       
-      '''
-      for quantile in quantiles
-        @$('.bio_viz .legends').append """
-          <div class="legend"><span style="background-color:#{quantiles.bg};">&nbsp;</span>#{quantiles.range}</div>
-        """
-      '''
       @$(graph).append '<br style="clear:both;">'
 
   getAllValues: (all_str) =>

@@ -402,27 +402,50 @@
 .fish_viz .bar {
   fill: steelblue;
 }
+.herb_viz .minScore,
+.fish_viz .minScore {
+  font-size: 12px;
+}
+.herb_viz .maxScore,
+.fish_viz .maxScore {
+  font-size: 12px;
+}
 .herb_viz .score,
 .fish_viz .score {
-  font-size: 16px;
+  font-size: 12px;
 }
 .herb_viz .legends,
 .fish_viz .legends {
   margin-top: 5px;
   margin-left: 40px;
 }
-.herb_viz .legend,
-.fish_viz .legend {
+.herb_viz div.legend,
+.fish_viz div.legend {
   margin-right: 10px;
   float: left;
   font-size: 10px;
 }
-.herb_viz .legend span,
-.fish_viz .legend span {
-  margin: 0px 3px;
+.herb_viz div.legend span,
+.fish_viz div.legend span {
+  margin-top: 0px;
+  margin-right: 3px;
   display: inline-block;
   width: 10px;
   height: 10px;
+  vertical-align: middle;
+}
+.herb_viz .fish,
+.fish_viz .fish {
+  background-color: steelblue;
+}
+.herb_viz .herb,
+.fish_viz .herb {
+  background-color: #47ae43;
+}
+.herb_viz div.legend-sketch-values,
+.fish_viz div.legend-sketch-values {
+  margin-right: 10px;
+  font-size: 10px;
 }
 .in-report-header {
   font-weight: bold;
@@ -436,4 +459,12 @@
 .scoreLine {
   stroke: #000;
   stroke-width: 1;
+}
+.minScoreLine {
+  stroke: #a9a9a9;
+  stroke-width: 0.5;
+}
+.maxScoreLine {
+  stroke: #a9a9a9;
+  stroke-width: 0.5;
 }

@@ -36,9 +36,16 @@
   }
 
 
+  .minScore {
+  	font-size:12px;
+  }
+
+  .maxScore {
+  	font-size: 12px;
+  }
 
   .score {
-    font-size:16px;
+    font-size:12px;
   }
 
   .legends {
@@ -46,18 +53,32 @@
     margin-left:40px;
   }
 
-  .legend {
+  div.legend {
     margin-right:10px;
     float:left;
     font-size:10px;
-    span {
-      margin:0px 3px;
+    span{
+      margin-top:0px;
+      margin-right:3px;
       display:inline-block;
       width:10px;
       height:10px;
+      vertical-align:middle;
     }
   }
 
+  .fish {
+      background-color: steelblue;
+  }
+
+  .herb {
+      background-color: #47ae43
+  }
+
+  div.legend-sketch-values{
+    margin-right:10px;
+    font-size:10px;
+  }
 }
 
 .in-report-header {
@@ -74,4 +95,14 @@
 .scoreLine{
 	stroke:#000;
 	stroke-width:1;
+}
+
+.minScoreLine{
+	stroke:#a9a9a9;
+	stroke-width:0.5;
+}
+
+.maxScoreLine{
+	stroke:#a9a9a9;
+	stroke-width:0.5;
 }
