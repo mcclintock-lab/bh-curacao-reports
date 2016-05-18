@@ -23,6 +23,7 @@
           </p>
         {{/meetsConservationGoal}}
       {{/isCollection}}
+
       <table data-paging="10">
         <thead>
           <tr>
@@ -41,14 +42,24 @@
           {{/habitats}}
         </tbody>
       </table>
+      {{^isCollection}}
+      <p>
+        <i>
+          This project has set a conservation goal to protect 30% of coral reef habitat, and at minimum meet the National Standard of 10% protection. These goals will not be met by a single protection zone, but require the design of multiple zones along the Curacao coast. Place this sketch in a Collection folder with other sketches to analyze a complete zoning scheme
+        </i>
+      <p>
+      {{/isCollection}}
  </div>
 
  <div class="reportSection tableContainer">
     <h4>Biomass</h4>
+    <p>
+      These charts show the minimum, mean and maximum biomass value taken within your sketched zone, in relation to the distribution of biomass measured around the island. Biomass was calculated for Herbivores and All Fish at regular points along Curacao's coast
+    <p>
     {{#d3IsPresent}}
-      <div class="in-report-header">Herbivorous Biomass</div>
+      <div class="in-report-header">Herbivore Biomass</div>
       <div id="herb_viz" class="herb_viz"></div>
-      <div class="in-report-header">Fish Biomass</div>
+      <div class="in-report-header">All Fish Biomass</div>
       <div id="fish_viz" class="fish_viz"></div>
     {{/d3IsPresent}}
     {{^d3IsPresent}}
@@ -63,13 +74,13 @@
         </thead>
         <tbody>
           <tr>
-            <td>Herbivore</td>
+            <td>Herbivores</td>
             <td>{{herb.MEAN}}</td>
             <td>{{herb.MIN}}</td>
             <td>{{herb.MAX}}</td>
           </tr>
           <tr>
-            <td>Fish</td>
+            <td>All Fish</td>
             <td>{{fish.MEAN}}</td>
             <td>{{fish.MIN}}</td>
             <td>{{fish.MAX}}</td>
