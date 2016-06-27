@@ -22,10 +22,10 @@ class EnvironmentTab extends ReportTab
     # create random data for visualization
     habitats = @recordSet('Habitat', 'Habitats').toArray()
     herb_bio = @recordSet('BiomassToolbox', 'HerbivoreBiomass').toArray()[0]
-    all_herb_vals = @getAllValues herb_bio.ALL_VALS
+    all_herb_vals = @getAllValues herb_bio.HISTO
 
     fish_bio = @recordSet('BiomassToolbox', 'FishBiomass').toArray()[0]
-    all_fish_vals = @getAllValues fish_bio.ALL_VALS
+    all_fish_vals = @getAllValues fish_bio.HISTO
 
     @roundVals herb_bio
     @roundVals fish_bio
@@ -66,7 +66,7 @@ class EnvironmentTab extends ReportTab
     return false
   renderHistoValues: (biomass, histo_vals, graph, color) =>
     if window.d3
-      mean = biomass.MEAN
+      mean = biomass.SCORE
       bmin = biomass.MIN
       bmax = biomass.MAX
       console.log("min: ", min)
@@ -269,11 +269,14 @@ class EnvironmentTab extends ReportTab
       @$(graph).append '<br style="clear:both;">'
 
   getAllValues: (all_str) =>
-
-    all_vals = all_str.substring(1, all_str.length - 1)
-    all_vals = all_vals.split(", ")
-    sorted_vals = _.sortBy all_vals, (d) ->  parseFloat(d)
-    return sorted_vals
+    try
+      all_vals = all_str.substring(1, all_str.length - 1)
+      all_vals = all_vals.split(", ")
+      sorted_vals = _.sortBy all_vals, (d) ->  parseFloat(d)
+      return sorted_vals
+    catch e
+      return []
+    
 
   roundVals: (d) =>    
     d.MEAN = parseFloat(d.MEAN).toFixed(1)
