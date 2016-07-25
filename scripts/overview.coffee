@@ -59,7 +59,7 @@ class OverviewTab extends ReportTab
     zone_sizes = @cleanupDataAndSetThresholds(zone_sizes)
 
     zone_data = _.sortBy zone_sizes, (row) -> row.NAME
-    waters_data = _.sortBy waters_sizes, (row) -> row.NAME
+    waters_data = _.sortBy waters_sizes, (row) -> row.SORT_ORDER
 
     # setup context object with data and render the template from it
     context =
@@ -86,11 +86,19 @@ class OverviewTab extends ReportTab
       meets_thresh_val = "small-green-check"
 
 
-    zdata = {"NAME":"1 km Coastal Zones", "PERC": zone_total, "THRESH": 30, "MEETS_THRESH": meets_thresh_val}
+    zdata = {"NAME":"Coastal Zones (within 1 km)", "PERC": zone_total, "THRESH": 30, "MEETS_THRESH": meets_thresh_val, "SORT_ORDER":0}
     waters_data.push(zdata)
+    nat_waters = "National Waters" 
+    eez = "EEZ"
     for d in zone_sizes
       d.PERC = parseFloat(d.PERC).toFixed(1)
-      if d.NAME == "National Waters" || d.NAME == "EEZ"
+      if d.NAME == nat_waters|| d.NAME == eez
+        if d.NAME == nat_waters
+          d.SORT_ORDER = 1
+          d.NAME = "National Waters (within 12 Nautical Miles)"
+        else
+          d.SORT_ORDER = 2
+
         d.THRESH = 30
         if d.PERC > d.THRESH
           d.MEETS_THRESH = "small-green-check"
@@ -116,7 +124,7 @@ class OverviewTab extends ReportTab
     zone_data = []
     for d in data
       d.PERC = parseFloat(d.PERC).toFixed(1)
-      if d.NAME == "National Waters"
+      if d.NAME == "National Waters (within 12 Nautical Miles)"
         d.THRESH = 30
       else if d.NAME == "EEZ"
         d.THRESH = 30
