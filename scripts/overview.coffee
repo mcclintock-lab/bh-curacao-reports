@@ -16,9 +16,9 @@ class OverviewTab extends ReportTab
   dependencies:[ 
     'SizeToolbox'
     'DiveAndFishingValue'
+    'CoastalZoneSize'
   ]
   render: () ->
-
 
     # create random data for visualization
     size = @recordSet('SizeToolbox', 'Size').toArray()[0]
@@ -50,6 +50,12 @@ class OverviewTab extends ReportTab
     else
       displaced_dive_value = "unknown"
 
+    zone_sizes = @recordSet('CoastalZoneSize', 'ZoneSize').toArray()
+    @cleanupDataAndSetThresholds(zone_sizes)
+    zone_tot = @getZoneTotal(zone_sizes)
+    meets_zone_thresh = (zone_tot > 30.0)
+
+    zone_data = _.sortBy zone_sizes, (row) -> row.SORT_SPOT
 
     # setup context object with data and render the template from it
     context =
@@ -63,9 +69,49 @@ class OverviewTab extends ReportTab
       min_dim_size: min_dim_size
       displaced_fishing_value: displaced_fishing_value
       displaced_dive_value: displaced_dive_value
-
+      zone_sizes: zone_data
+      zone_tot: zone_tot
+      meets_zone_thresh: meets_zone_thresh
     
     @$el.html @template.render(context, templates)
     @enableLayerTogglers()
 
+  getZoneTotal: (data) =>
+    tot = 0.0
+    ztot = 82708521.5277
+    for d in data
+      if d.NAME != "National Waters" and d.NAME != "EEZ"
+        tot+= parseFloat(d.AREA)
+
+    perc = (parseFloat((tot/ztot)*100.0)).toFixed(1)
+    return perc
+
+  cleanupDataAndSetThresholds: (data) =>
+    
+    for d in data
+      d.PERC = parseFloat(d.PERC).toFixed(1)
+      if d.NAME == "National Waters"
+        d.THRESH = 30
+        d.SORT__SPOT = 10
+      else if d.NAME == "EEZ"
+        d.THRESH = 30
+        d.SORT_SPOT = 9
+      else 
+        zone_parts = d.NAME.split(" ")
+        if d.NAME == "Zone 1" || d.NAME == "Zone 8"
+          d.THRESH = 0
+        else
+          d.THRESH = 15
+        d.SORT_SPOT = parseInt(zone_parts[1])
+      
+      if d.THRESH == 0
+        d.MEETS_THRESH = "small-gray-question"
+      else if d.PERC > d.THRESH
+        d.MEETS_THRESH = "small-green-check"
+      else
+        d.MEETS_THRESH = "small-red-x"
+
+
+      console.log("meets: ", d.MEETS_THRESH)
+      
 module.exports = OverviewTab

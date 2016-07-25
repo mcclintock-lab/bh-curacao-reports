@@ -28,4 +28,35 @@
     </p>
  </div>
 
-
+ <div class="reportSection tableContainer">
+    <h4>Zone Sizes</h4>
+      {{#meets_zone_thresh}}
+        <p style="padding-left:50px;" class="large green-check">
+          The selected {{#isCollection}}collection{{/isCollection}}{{^isCollection}}sketch{{/isCollection}} protects <b>{{zone_tot}}%</b> of the coastal zones, meeting the goal of preserving <b>30%</b> of the coastal zones.
+        </p>
+      {{/meets_zone_thresh}}
+      {{^meets_zone_thresh}}
+        <p style="padding-left:50px;" class="large red-x">
+          The selected {{#isCollection}}collection{{/isCollection}}{{^isCollection}}sketch{{/isCollection}} protects <b>{{zone_tot}}%</b> of the coastal zones, failing to achieve the goal of preserving <b>30%</b> of the coastal zones.
+        </p>
+      {{/meets_zone_thresh}}
+     <table data-paging="10">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Percent</th>
+            <th style="width:75px;">Meets Threshold?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#zone_sizes}}
+          <tr>
+            <td>{{NAME}}</td>
+            <td>{{PERC}}</td>
+            <td class={{MEETS_THRESH}}></td>
+          </tr>
+          {{/zone_sizes}}
+        </tbody>
+      </table>
+ </div>
+ 
