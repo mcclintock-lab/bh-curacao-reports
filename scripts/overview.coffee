@@ -51,11 +51,15 @@ class OverviewTab extends ReportTab
       displaced_dive_value = "unknown"
 
     zone_sizes = @recordSet('CoastalZoneSize', 'ZoneSize').toArray()
-    @cleanupDataAndSetThresholds(zone_sizes)
+    
+
     zone_tot = @getZoneTotal(zone_sizes)
     meets_zone_thresh = (zone_tot > 30.0)
+    waters_sizes = @getWatersSizes(zone_sizes, zone_tot, meets_zone_thresh)
+    zone_sizes = @cleanupDataAndSetThresholds(zone_sizes)
 
-    zone_data = _.sortBy zone_sizes, (row) -> row.SORT_SPOT
+    zone_data = _.sortBy zone_sizes, (row) -> row.NAME
+    waters_data = _.sortBy waters_sizes, (row) -> row.NAME
 
     # setup context object with data and render the template from it
     context =
@@ -70,11 +74,32 @@ class OverviewTab extends ReportTab
       displaced_fishing_value: displaced_fishing_value
       displaced_dive_value: displaced_dive_value
       zone_sizes: zone_data
-      zone_tot: zone_tot
-      meets_zone_thresh: meets_zone_thresh
+      waters_data: waters_data
     
     @$el.html @template.render(context, templates)
     @enableLayerTogglers()
+
+  getWatersSizes: (zone_sizes, zone_total, meets_thresh) =>
+    waters_data = []
+    meets_thresh_val = "small-red-x"
+    if meets_thresh
+      meets_thresh_val = "small-green-check"
+
+
+    zdata = {"NAME":"1 km Coastal Zones", "PERC": zone_total, "THRESH": 30, "MEETS_THRESH": meets_thresh_val}
+    waters_data.push(zdata)
+    for d in zone_sizes
+      d.PERC = parseFloat(d.PERC).toFixed(1)
+      if d.NAME == "National Waters" || d.NAME == "EEZ"
+        d.THRESH = 30
+        if d.PERC > d.THRESH
+          d.MEETS_THRESH = "small-green-check"
+        else
+          d.MEETS_THRESH = "small-red-x"
+        waters_data.push(d)
+
+
+    return waters_data
 
   getZoneTotal: (data) =>
     tot = 0.0
@@ -86,23 +111,22 @@ class OverviewTab extends ReportTab
     perc = (parseFloat((tot/ztot)*100.0)).toFixed(1)
     return perc
 
+
   cleanupDataAndSetThresholds: (data) =>
-    
+    zone_data = []
     for d in data
       d.PERC = parseFloat(d.PERC).toFixed(1)
       if d.NAME == "National Waters"
         d.THRESH = 30
-        d.SORT__SPOT = 10
       else if d.NAME == "EEZ"
         d.THRESH = 30
-        d.SORT_SPOT = 9
       else 
         zone_parts = d.NAME.split(" ")
         if d.NAME == "Zone 1" || d.NAME == "Zone 8"
           d.THRESH = 0
         else
           d.THRESH = 15
-        d.SORT_SPOT = parseInt(zone_parts[1])
+        zone_data.push(d)
       
       if d.THRESH == 0
         d.MEETS_THRESH = "small-gray-question"
@@ -112,6 +136,6 @@ class OverviewTab extends ReportTab
         d.MEETS_THRESH = "small-red-x"
 
 
-      console.log("meets: ", d.MEETS_THRESH)
+    return zone_data
       
 module.exports = OverviewTab

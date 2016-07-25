@@ -28,18 +28,28 @@
     </p>
  </div>
 
- <div class="reportSection tableContainer">
-    <h4>Zone Sizes</h4>
-      {{#meets_zone_thresh}}
-        <p style="padding-left:50px;" class="large green-check">
-          The selected {{#isCollection}}collection{{/isCollection}}{{^isCollection}}sketch{{/isCollection}} protects <b>{{zone_tot}}%</b> of the coastal zones, meeting the goal of preserving <b>30%</b> of the coastal zones.
-        </p>
-      {{/meets_zone_thresh}}
-      {{^meets_zone_thresh}}
-        <p style="padding-left:50px;" class="large red-x">
-          The selected {{#isCollection}}collection{{/isCollection}}{{^isCollection}}sketch{{/isCollection}} protects <b>{{zone_tot}}%</b> of the coastal zones, failing to achieve the goal of preserving <b>30%</b> of the coastal zones.
-        </p>
-      {{/meets_zone_thresh}}
+ <div class="reportSection">
+    <h4>Protection Goals<a href="#" data-toggle-node="5787c8c2002f824502cb111a" data-visible="false">show layer</a></h4>
+    <span class="in-report-table-header">Within Curacao's Waters</span>
+     <table data-paging="10">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Percent</th>
+            <th style="width:75px;">Meets Threshold?</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#waters_data}}
+          <tr>
+            <td>{{NAME}}</td>
+            <td>{{PERC}}</td>
+            <td class={{MEETS_THRESH}}></td>
+          </tr>
+          {{/waters_data}}
+        </tbody>
+      </table>
+    <span class="in-report-table-header">Within The Coastal Zones</span>
      <table data-paging="10">
         <thead>
           <tr>
