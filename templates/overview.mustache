@@ -31,6 +31,9 @@
  <div class="reportSection">
     <h4>Protection Goals<a href="#" data-toggle-node="5787c8c2002f824502cb111a" data-visible="false">show layer</a></h4>
     <span class="in-report-table-header">Within Curacao's Waters</span>
+    <div class="protection-info">
+      Does your plan meet the goal to protect 30% of Curacao’s nearshore waters, 30% of the waters out to 12nm, and 30% of the waters out to the EEZ boundary?
+    </div>
      <table data-paging="10">
         <thead>
           <tr>
@@ -50,6 +53,9 @@
         </tbody>
       </table>
     <span class="in-report-table-header">Within The Coastal Zones</span>
+    <div class="protection-info">
+      Curacao’s waters within 1km from the shoreline have been divided into 8 distinct zones, based on Grouping Analysis of the Census data. Listed below, see if your plan meets the goal of protecting 15% of zones 2, 3, 4, 5, 6, and 7 (in addition to the goal of protecting 30% of nearshore waters overall, listed above). Click ‘show layer’ above to see a map of the 8 zones.
+    </div>
      <table data-paging="10">
         <thead>
           <tr>
@@ -61,7 +67,7 @@
         <tbody>
           {{#zone_sizes}}
           <tr>
-            <td>{{NAME}}</td>
+            <td>{{FULLNAME}}</td>
             <td>{{PERC}}</td>
             <td class={{MEETS_THRESH}}></td>
           </tr>

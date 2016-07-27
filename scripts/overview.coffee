@@ -19,6 +19,9 @@ class OverviewTab extends ReportTab
     'CoastalZoneSize'
   ]
   render: () ->
+    zone_names = ["Klein Curacao","Eastpoint","Fuik Bay to Seaquarium",
+                  "Seaquarium to Boka Sami","Boka Sami to Kaap Sint Marie",
+                  "Kaap Sint Marie to Santa Cruz", "Santa Cruz to Westpunt","North Shore"]
 
     # create random data for visualization
     size = @recordSet('SizeToolbox', 'Size').toArray()[0]
@@ -56,7 +59,7 @@ class OverviewTab extends ReportTab
     zone_tot = @getZoneTotal(zone_sizes)
     meets_zone_thresh = (zone_tot > 30.0)
     waters_sizes = @getWatersSizes(zone_sizes, zone_tot, meets_zone_thresh)
-    zone_sizes = @cleanupDataAndSetThresholds(zone_sizes)
+    zone_sizes = @cleanupDataAndSetThresholds(zone_sizes, zone_names)
 
     zone_data = _.sortBy zone_sizes, (row) -> row.NAME
     waters_data = _.sortBy waters_sizes, (row) -> row.SORT_ORDER
@@ -120,22 +123,23 @@ class OverviewTab extends ReportTab
     return perc
 
 
-  cleanupDataAndSetThresholds: (data) =>
+  cleanupDataAndSetThresholds: (data, zone_names) =>
     zone_data = []
+   
     for d in data
       d.PERC = parseFloat(d.PERC).toFixed(1)
-      if d.NAME == "National Waters (within 12 Nautical Miles)"
-        d.THRESH = 30
-      else if d.NAME == "EEZ"
-        d.THRESH = 30
-      else 
-        zone_parts = d.NAME.split(" ")
+      #cut the national waters and eez, it'll be in the other list
+      if d.NAME != "National Waters (within 12 Nautical Miles)" and d.NAME != "EEZ"
         if d.NAME == "Zone 1" || d.NAME == "Zone 8"
           d.THRESH = 0
         else
           d.THRESH = 15
+        np = d.NAME.split(" ")
+        dex = parseInt(np[1])-1
+        d.FULLNAME = d.NAME + " - "+zone_names[dex]
+        
         zone_data.push(d)
-      
+
       if d.THRESH == 0
         d.MEETS_THRESH = "small-gray-question"
       else if d.PERC > d.THRESH

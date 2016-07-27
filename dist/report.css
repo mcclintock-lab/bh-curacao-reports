@@ -529,3 +529,9 @@ p.red-x:before {
   content: '-';
   font-size: 12px;
 }
+div.protection-info {
+  padding-left: 5px;
+  padding-right: 5px;
+  display: inline-block;
+  padding-bottom: 10px;
+}
