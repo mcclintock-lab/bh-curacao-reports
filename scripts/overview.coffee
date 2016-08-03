@@ -114,7 +114,7 @@ class OverviewTab extends ReportTab
 
   getZoneTotal: (data) =>
     tot = 0.0
-    ztot = 82708521.5277
+    ztot = 153936441.057
     for d in data
       if d.NAME != "National Waters" and d.NAME != "EEZ"
         tot+= parseFloat(d.AREA)
