@@ -57,6 +57,7 @@ class OverviewTab extends ReportTab
     
 
     zone_tot = @getZoneTotal(zone_sizes)
+    console.log('zone tot: ', zone_sizes)
     meets_zone_thresh = (zone_tot > 30.0)
     waters_sizes = @getWatersSizes(zone_sizes, zone_tot, meets_zone_thresh)
     zone_sizes = @cleanupDataAndSetThresholds(zone_sizes, zone_names)

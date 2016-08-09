@@ -73,20 +73,56 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Herbivores</td>
-            <td>{{herb.MEAN}}</td>
-            <td>{{herb.MIN}}</td>
-            <td>{{herb.MAX}}</td>
-          </tr>
-          <tr>
-            <td>All Fish</td>
-            <td>{{fish.MEAN}}</td>
-            <td>{{fish.MIN}}</td>
-            <td>{{fish.MAX}}</td>
-          </tr>
+          {{#herb}}
+            <tr>
+              <td>Herbivores</td>
+              <td>{{herb.MEAN}}</td>
+              <td>{{herb.MIN}}</td>
+              <td>{{herb.MAX}}</td>
+            </tr>
+          {{/herb}}
+          {{#fish}}
+            <tr>
+              <td>All Fish</td>
+              <td>{{fish.MEAN}}</td>
+              <td>{{fish.MIN}}</td>
+              <td>{{fish.MAX}}</td>
+            </tr>
+          {{/fish}}
         </tbody>
       </table>
     {{/d3IsPresent}}
  </div>
 
+ <div class="reportSection tableContainer">
+    <h4>Coral Cover (%)</h4>
+    <p>
+      These charts show the minimum, mean and maximum coral cover value (in %) taken within your sketched zone, in relation to the distribution of values measured around the island.
+    <p>
+    {{#d3IsPresent}}
+      <div id="coral_viz" class="coral_viz"></div>
+    {{/d3IsPresent}}
+    {{^d3IsPresent}}
+      <table data-paging="10">
+        <thead>
+          <tr>
+            <th style="width:250px;"></th>
+            <th>Mean</th>
+            <th>Minimum</th>
+            <th>Maximum</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#coral}}
+            <tr>
+              <td>Herbivores</td>
+              <td>{{coral.MEAN}}</td>
+              <td>{{coral.MIN}}</td>
+              <td>{{coral.MAX}}</td>
+            </tr>
+          {{/coral}}
+
+        </tbody>
+      </table>
+    {{/d3IsPresent}}
+  </div>

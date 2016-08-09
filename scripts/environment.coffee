@@ -23,12 +23,15 @@ class EnvironmentTab extends ReportTab
     habitats = @recordSet('Habitat', 'Habitats').toArray()
     herb_bio = @recordSet('BiomassToolbox', 'HerbivoreBiomass').toArray()[0]
     all_herb_vals = @getAllValues herb_bio.HISTO
+    @roundVals herb_bio
 
     fish_bio = @recordSet('BiomassToolbox', 'FishBiomass').toArray()[0]
     all_fish_vals = @getAllValues fish_bio.HISTO
-
-    @roundVals herb_bio
     @roundVals fish_bio
+    
+    coral_cover = @recordSet('BiomassToolbox', 'CoralCover').toArray()[0]
+    all_coral_vals = @getAllValues coral_cover.HISTO
+    @roundVals coral_cover
 
 
     isCollection = @model.isCollection()   
@@ -49,14 +52,16 @@ class EnvironmentTab extends ReportTab
       d3IsPresent: d3IsPresent
       herb: herb_bio
       fish: fish_bio
+      coral: coral_cover
       meetsNationalGoal: meetsNationalGoal
       meetsConservationGoal: meetsConservationGoal
 
     @$el.html @template.render(context, templates)
     @enableLayerTogglers()
 
-    @renderHistoValues(herb_bio, all_herb_vals, ".herb_viz", "#47ae43")
-    @renderHistoValues(fish_bio, all_fish_vals, ".fish_viz", "steelblue")
+    @renderHistoValues(herb_bio, all_herb_vals, ".herb_viz", "#66cdaa","Biomass (g/m^2)", "Number of Biomass Points")
+    @renderHistoValues(fish_bio, all_fish_vals, ".fish_viz", "#6897bb", "Biomass (g/m^2)", "Number of Biomass Points")
+    @renderHistoValues(coral_cover, all_coral_vals, ".coral_viz", "#fa8072", "Coral Cover (%)", "Number of Coral Points")
 
   meetsCoralGoal: (habitats, goal_val) =>
     for hab in habitats
@@ -64,7 +69,8 @@ class EnvironmentTab extends ReportTab
         return hab.PERC > goal_val
 
     return false
-  renderHistoValues: (biomass, histo_vals, graph, color) =>
+
+  renderHistoValues: (biomass, histo_vals, graph, color, x_axis_label, legend_label) =>
     if window.d3
       mean = biomass.SCORE
       bmin = biomass.MIN
@@ -159,7 +165,7 @@ class EnvironmentTab extends ReportTab
         .attr("y", 0)
         .attr("dy", "3em")
         .style("text-anchor", "middle")
-        .text("Biomass (g/m^2)")
+        .text(x_axis_label)
 
       svg.append("g")
         .attr("class", "y axis")
@@ -170,7 +176,8 @@ class EnvironmentTab extends ReportTab
         .attr("transform", "rotate(-90)")
         .attr("dy", ".71em")
         .style("text-anchor", "end")
-        .text("Number of Biomass Points")
+        .text(legend_label)
+
 
       svg.selectAll(".bar")
           .data(quantiles)
@@ -263,9 +270,11 @@ class EnvironmentTab extends ReportTab
 
       if graph == ".herb_viz"
         @$(graph).append '<div class="legends"><div class="legend"><span class="herb">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
-      else
+      if graph == ".fish_viz"
         @$(graph).append '<div class="legends"><div class="legend"><span class="fish">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
-      
+      if graph == ".coral_viz"
+        @$(graph).append '<div class="legends"><div class="legend"><span class="coral">&nbsp;</span>Coral Cover in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
+       
       @$(graph).append '<br style="clear:both;">'
 
   getAllValues: (all_str) =>
