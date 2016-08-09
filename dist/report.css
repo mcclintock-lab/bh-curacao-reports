@@ -437,16 +437,28 @@
   margin-top: 5px;
   margin-left: 40px;
 }
-.herb_viz div.legend,
-.fish_viz div.legend,
-.coral_viz div.legend {
+.herb_viz .fish-legend,
+.fish_viz .fish-legend,
+.coral_viz .fish-legend,
+.herb_viz .herb-legend,
+.fish_viz .herb-legend,
+.coral_viz .herb-legend,
+.herb_viz .coral-legend,
+.fish_viz .coral-legend,
+.coral_viz .coral-legend {
   margin-right: 10px;
   float: left;
   font-size: 10px;
 }
-.herb_viz div.legend span,
-.fish_viz div.legend span,
-.coral_viz div.legend span {
+.herb_viz .fish-legend span,
+.fish_viz .fish-legend span,
+.coral_viz .fish-legend span,
+.herb_viz .herb-legend span,
+.fish_viz .herb-legend span,
+.coral_viz .herb-legend span,
+.herb_viz .coral-legend span,
+.fish_viz .coral-legend span,
+.coral_viz .coral-legend span {
   margin-top: 0px;
   margin-right: 3px;
   display: inline-block;
@@ -454,20 +466,20 @@
   height: 10px;
   vertical-align: middle;
 }
-.herb_viz .fish,
-.fish_viz .fish,
-.coral_viz .fish {
+.herb_viz .fish-swatch,
+.fish_viz .fish-swatch,
+.coral_viz .fish-swatch {
   background-color: #6897bb;
 }
-.herb_viz .herb,
-.fish_viz .herb,
-.coral_viz .herb {
-  background-color: #fa8072;
+.herb_viz .herb-swatch,
+.fish_viz .herb-swatch,
+.coral_viz .herb-swatch {
+  background-color: #66cdaa;
 }
-.herb_viz .coral,
-.fish_viz .coral,
-.coral_viz .coral {
-  background-color: #c39797;
+.herb_viz .coral-swatch,
+.fish_viz .coral-swatch,
+.coral_viz .coral-swatch {
+  background-color: #fa8072;
 }
 .herb_viz div.legend-sketch-values,
 .fish_viz div.legend-sketch-values,

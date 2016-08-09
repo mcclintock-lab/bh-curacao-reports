@@ -267,13 +267,14 @@ class EnvironmentTab extends ReportTab
         .attr("x", (d) -> (x(d) - 21 )+ 'px')
         .attr("y", (d) -> (y(max_count_val) - 30) + 'px')
         .text((d) -> "Max: "+d)
-
+      console.log("graph == ", @$(graph))
+      
       if graph == ".herb_viz"
-        @$(graph).append '<div class="legends"><div class="legend"><span class="herb">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
+        @$(graph).append '<div class="legends"><div class="legend"><span class="herb-swatch">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
       if graph == ".fish_viz"
-        @$(graph).append '<div class="legends"><div class="legend"><span class="fish">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
+        @$(graph).append '<div class="legends"><div class="legend"><span class="fish-swatch">&nbsp;</span>Biomass in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
       if graph == ".coral_viz"
-        @$(graph).append '<div class="legends"><div class="legend"><span class="coral">&nbsp;</span>Coral Cover in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
+        @$(graph).append '<div class="legends"><div class="legend"><span class="coral-swatch">&nbsp;</span>Coral Cover in Region</div><div class="legend-sketch-values">▼ Sketch Values</div></div>'
        
       @$(graph).append '<br style="clear:both;">'
 
