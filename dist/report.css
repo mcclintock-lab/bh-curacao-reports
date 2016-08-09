@@ -437,28 +437,16 @@
   margin-top: 5px;
   margin-left: 40px;
 }
-.herb_viz .fish-legend,
-.fish_viz .fish-legend,
-.coral_viz .fish-legend,
-.herb_viz .herb-legend,
-.fish_viz .herb-legend,
-.coral_viz .herb-legend,
-.herb_viz .coral-legend,
-.fish_viz .coral-legend,
-.coral_viz .coral-legend {
+.herb_viz .legend,
+.fish_viz .legend,
+.coral_viz .legend {
   margin-right: 10px;
   float: left;
   font-size: 10px;
 }
-.herb_viz .fish-legend span,
-.fish_viz .fish-legend span,
-.coral_viz .fish-legend span,
-.herb_viz .herb-legend span,
-.fish_viz .herb-legend span,
-.coral_viz .herb-legend span,
-.herb_viz .coral-legend span,
-.fish_viz .coral-legend span,
-.coral_viz .coral-legend span {
+.herb_viz .legend span,
+.fish_viz .legend span,
+.coral_viz .legend span {
   margin-top: 0px;
   margin-right: 3px;
   display: inline-block;
