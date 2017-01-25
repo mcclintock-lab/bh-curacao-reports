@@ -149,16 +149,17 @@ class EnvironmentTab extends ReportTab
         .scale(y)
         .orient("left")
 
+
       min_max_line_y = max_count_val - 20
       svg = d3.select(@$(graph)[0]).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
       .append("g")
-        .attr("transform", "translate(#{margin.left}, #{margin.top})")
+        .attr("transform", "translate(45, 40)")
 
       svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0,#{height})")
+        .attr("transform", "translate(0,270)")
         .call(xAxis)
       .append("text")
         .attr("x", width / 2)
