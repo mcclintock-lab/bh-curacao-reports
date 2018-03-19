@@ -90,7 +90,7 @@ class OverviewTab extends ReportTab
       meets_thresh_val = "small-green-check"
 
 
-    zdata = {"NAME":"Coastal Zones (within 1 km)", "PERC": zone_total, "THRESH": 30, "MEETS_THRESH": meets_thresh_val, "SORT_ORDER":0}
+    zdata = {"NAME":"Coastal Zones (within 200m)", "PERC": zone_total, "THRESH": 30, "MEETS_THRESH": meets_thresh_val, "SORT_ORDER":0}
     waters_data.push(zdata)
     nat_waters = "National Waters" 
     eez = "EEZ"
@@ -115,7 +115,7 @@ class OverviewTab extends ReportTab
 
   getZoneTotal: (data) =>
     tot = 0.0
-    ztot = 153936441.057
+    ztot = 82657805.5707
     for d in data
       if d.NAME != "National Waters" and d.NAME != "EEZ"
         tot+= parseFloat(d.AREA)

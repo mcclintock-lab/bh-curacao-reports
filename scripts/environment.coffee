@@ -71,6 +71,7 @@ class EnvironmentTab extends ReportTab
     return false
 
   renderHistoValues: (biomass, histo_vals, graph, color, x_axis_label, legend_label) =>
+    console.log window.d3
     if window.d3
       mean = biomass.SCORE
       bmin = biomass.MIN
@@ -132,7 +133,7 @@ class EnvironmentTab extends ReportTab
 
       width = 400 - margin.left - margin.right
       height = 350 - margin.top - margin.bottom
-      
+      console.log("---------->>>>>>>>>>>>")
       x = d3.scale.linear()
         .domain([0, max_histo_val])
         .range([0, width])
@@ -152,15 +153,16 @@ class EnvironmentTab extends ReportTab
 
       min_max_line_y = max_count_val - 20
       svg = d3.select(@$(graph)[0]).append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", 400)
+        .attr("height", 350)
       .append("g")
         .attr("transform", "translate(45, 40)")
 
-      svg.append("g")
+      .append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0,270)")
         .call(xAxis)
+
       .append("text")
         .attr("x", width / 2)
         .attr("y", 0)
@@ -171,6 +173,7 @@ class EnvironmentTab extends ReportTab
       svg.append("g")
         .attr("class", "y axis")
         .call(yAxis)
+
       .append("text")
         .attr("y", -40)
         .attr("x", -80)
