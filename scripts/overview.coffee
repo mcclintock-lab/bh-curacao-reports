@@ -6,13 +6,13 @@ partials = []
 for key, val of _partials
   partials[key.replace('node_modules/seasketch-reporting-api/', '')] = val
 
-
 d3 = window.d3
 
 class OverviewTab extends ReportTab
   name: 'Overview'
   className: 'overview'
   template: templates.overview
+
   dependencies:[ 
     'SizeToolbox'
     'DiveAndFishingValue'
@@ -26,6 +26,8 @@ class OverviewTab extends ReportTab
     # create random data for visualization
     size = @recordSet('SizeToolbox', 'Size').toArray()[0]
     size = Number.parseFloat(size.SIZE_SQKM).toFixed(1)
+
+
 
     min_dim = @recordSet('SizeToolbox', 'MinDimension').toArray()[0]
     
@@ -65,12 +67,14 @@ class OverviewTab extends ReportTab
     zone_data = _.sortBy zone_sizes, (row) -> row.NAME
     waters_data = _.sortBy waters_sizes, (row) -> row.SORT_ORDER
 
+
     # setup context object with data and render the template from it
     context =
       sketch: @model.forTemplate()
       sketchClass: @sketchClass.forTemplate()
       attributes: @model.getAttributes()
       admin: @project.isAdmin window.user
+
       isCollection: isCollection
       size: size
       min_dim_name: min_dim_name
@@ -115,7 +119,7 @@ class OverviewTab extends ReportTab
 
   getZoneTotal: (data) =>
     tot = 0.0
-    ztot = 82657805.5707
+    ztot = 31227874.677
     for d in data
       if d.NAME != "National Waters" and d.NAME != "EEZ"
         tot+= parseFloat(d.AREA)
