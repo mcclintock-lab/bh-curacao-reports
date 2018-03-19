@@ -119,7 +119,8 @@ class OverviewTab extends ReportTab
 
   getZoneTotal: (data) =>
     tot = 0.0
-    ztot = 31227874.677
+
+    ztot = 29634242.242
     for d in data
       if d.NAME != "National Waters" and d.NAME != "EEZ"
         tot+= parseFloat(d.AREA)
@@ -135,9 +136,14 @@ class OverviewTab extends ReportTab
       d.PERC = parseFloat(d.PERC).toFixed(1)
       #cut the national waters and eez, it'll be in the other list
       if d.NAME != "National Waters (within 12 Nautical Miles)" and d.NAME != "EEZ"
+        if d.PERC >= 99.7
+            #clipping/rounding kludge
+            d.PERC = 100
         if d.NAME == "Zone 1" || d.NAME == "Zone 8"
           d.THRESH = 0
         else
+
+
           d.THRESH = 15
         np = d.NAME.split(" ")
         dex = parseInt(np[1])-1
