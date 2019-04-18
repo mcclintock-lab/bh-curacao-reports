@@ -1,5 +1,3 @@
-
-
   <div class="reportSection">
     <h4>Protection Goals<a href="#" data-toggle-node="5787c8c2002f824502cb111a" data-visible="false">show layer</a></h4>
     <span class="in-report-table-header">Within Curacao's Waters</span>
@@ -54,7 +52,7 @@
       The {{#isCollection}}collection{{/isCollection}}{{^isCollection}}zone{{/isCollection}} is <strong>{{size}} sq. km.</strong>
     </p>
  </div>
-
+{{^isSanctuary}}
  <div class="reportSection">
     <h4>Fishing Value<a href="#" data-toggle-node="576dd593c95114be19e2d493" data-visible="false">show heatmap layer</a></h4>
     <p>
@@ -68,5 +66,5 @@
       The {{#isCollection}}collection{{/isCollection}}{{^isCollection}}sketch{{/isCollection}} overlaps with approximately <strong>{{displaced_dive_value}}%</strong> of the total dive value within Curacao's waters, based on the user reported value of dive sites.
     </p>
  </div>
-
+{{/isSanctuary}}
 

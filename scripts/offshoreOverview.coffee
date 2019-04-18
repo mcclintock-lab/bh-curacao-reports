@@ -8,15 +8,14 @@ for key, val of _partials
 
 d3 = window.d3
 
-class OverviewTab extends ReportTab
+class OffshoreOverviewTab extends ReportTab
   name: 'Overview'
-  className: 'overview'
-  template: templates.overview
+  className: 'offshoreOverview'
+  template: templates.offshoreOverview
 
   dependencies:[ 
     'SizeToolbox'
-    'DiveAndFishingValue'
-    'CoastalZoneSize'
+
   ]
   render: () ->
     zone_names = ["Klein Curacao","Eastpoint","Fuik Bay to Seaquarium",
@@ -27,6 +26,8 @@ class OverviewTab extends ReportTab
     size = @recordSet('SizeToolbox', 'Size').toArray()[0]
     size = Number.parseFloat(size.SIZE_SQKM).toFixed(1)
 
+
+    sketchClassName = @sketchClass.getAttributes.name
     
     min_dim = @recordSet('SizeToolbox', 'MinDimension').toArray()[0]
     
@@ -34,38 +35,6 @@ class OverviewTab extends ReportTab
     min_dim_size = Number.parseFloat(min_dim.MIN_DIM).toFixed(1)
     
     isCollection = @model.isCollection()
-
-    dfv = @recordSet('DiveAndFishingValue', 'FishingValue').toArray()[0]
-    ddv = @recordSet('DiveAndFishingValue', 'DiveValue').toArray()[0]
-    
-    if dfv
-      if dfv.PERCENT < 0.01
-        displaced_fishing_value = "< 0.01"
-      else
-        displaced_fishing_value = parseFloat(dfv.PERCENT).toFixed(2)
-    else
-      displaced_fishing_value = "unknown"
-
-    if ddv
-      if ddv.PERCENT < 0.01
-        displaced_dive_value = "< 0.01"
-      else
-        displaced_dive_value = parseFloat(ddv.PERCENT).toFixed(2)
-    else
-      displaced_dive_value = "unknown"
-
-    zone_sizes = @recordSet('CoastalZoneSize', 'ZoneSize').toArray()
-    
-
-    zone_tot = @getZoneTotal(zone_sizes)
-    console.log('zone tot: ', zone_sizes)
-    meets_zone_thresh = (zone_tot > 30.0)
-    waters_sizes = @getWatersSizes(zone_sizes, zone_tot, meets_zone_thresh)
-    zone_sizes = @cleanupDataAndSetThresholds(zone_sizes, zone_names)
-
-    zone_data = _.sortBy zone_sizes, (row) -> row.NAME
-    waters_data = _.sortBy waters_sizes, (row) -> row.SORT_ORDER
-
 
     # setup context object with data and render the template from it
     context =
@@ -76,12 +45,7 @@ class OverviewTab extends ReportTab
 
       isCollection: isCollection
       size: size
-      min_dim_name: min_dim_name
-      min_dim_size: min_dim_size
-      displaced_fishing_value: displaced_fishing_value
-      displaced_dive_value: displaced_dive_value
-      zone_sizes: zone_data
-      waters_data: waters_data
+
     
     @$el.html @template.render(context, templates)
     @enableLayerTogglers()
@@ -128,36 +92,5 @@ class OverviewTab extends ReportTab
     return perc
 
 
-  cleanupDataAndSetThresholds: (data, zone_names) =>
-    zone_data = []
-   
-    for d in data
-      d.PERC = parseFloat(d.PERC).toFixed(1)
-      #cut the national waters and eez, it'll be in the other list
-      if d.NAME != "National Waters (within 12 Nautical Miles)" and d.NAME != "EEZ"
-        if d.PERC >= 99.7
-            #clipping/rounding kludge
-            d.PERC = 100
-        if d.NAME == "Zone 1" || d.NAME == "Zone 8"
-          d.THRESH = 0
-        else
-
-
-          d.THRESH = 15
-        np = d.NAME.split(" ")
-        dex = parseInt(np[1])-1
-        d.FULLNAME = d.NAME + " - "+zone_names[dex]
-        
-        zone_data.push(d)
-
-      if d.THRESH == 0
-        d.MEETS_THRESH = "small-gray-question"
-      else if d.PERC > d.THRESH
-        d.MEETS_THRESH = "small-green-check"
-      else
-        d.MEETS_THRESH = "small-red-x"
-
-
-    return zone_data
       
-module.exports = OverviewTab
+module.exports = OffshoreOverviewTab

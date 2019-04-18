@@ -21,6 +21,9 @@ class EnvironmentTab extends ReportTab
   render: () ->
     # create random data for visualization
     habitats = @recordSet('Habitat', 'Habitats').toArray()
+    sketchClassName = @sketchClass.getAttributes.name
+    console.log("sketch class name: ", sketchClassName)
+
     herb_bio = @recordSet('BiomassToolbox', 'HerbivoreBiomass').toArray()[0]
     all_herb_vals = @getAllValues herb_bio.HISTO
     @roundVals herb_bio

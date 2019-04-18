@@ -1,5 +1,4 @@
 module.exports = (grunt) ->
-
   # Project configuration.
   grunt.initConfig
     pkg: grunt.file.readJSON('package.json')
@@ -66,9 +65,9 @@ module.exports = (grunt) ->
       report:
         src: 'scripts/report.coffee'
         dest: 'dist/report.js'
-      generic:
-        src: 'scripts/generic.coffee'
-        dest: 'dist/generic.js'
+      offshoreReport:
+        src: 'scripts/offshoreReport.coffee'
+        dest: 'dist/offshoreReport.js'
       options:
         transform: ['coffeeify']
         debug: true
